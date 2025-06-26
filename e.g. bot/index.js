@@ -10,10 +10,12 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+import bodyParser from 'body-parser';
+app.use(bodyParser.json({ verify: (req, res, buf) => { req.rawBody = buf } }));
 
 app.post(
   '/api/interactions',
-  verifyKeyMiddleware(process.env.PUBLIC_KEY),
+  verifyKeyMiddleware(process.env.PUBLIC_KEY, (req) => req.rawBody)
   (req, res) => {
     const interaction = req.body;
 
