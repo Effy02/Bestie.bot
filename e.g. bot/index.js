@@ -36,15 +36,10 @@ app.post(
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `Bestie gave <@${user}> a squishy hug 🤗💖`,
+            content: `Bestie gave <@${user}> a warm and squishy hug 🤗💖`,
           },
         });
       }
     }
   }
 );
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => { console.log(`BestieBot running on port ${port}`); });
-// index.js
-// just triggering redeploy
