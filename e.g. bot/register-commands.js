@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import { Routes } from 'discord-api-types/v10';
+import { REST } from 'discord.js';
 
 dotenv.config();
 
