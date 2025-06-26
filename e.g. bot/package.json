@@ -1,0 +1,14 @@
+{
+  "name": "bestiebot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "discord-interactions": "^4.0.1"
+  }
+}
