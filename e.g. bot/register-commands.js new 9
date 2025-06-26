@@ -4,6 +4,7 @@ import { Routes } from 'discord-api-types/v10';
 import { REST } from 'discord.js';
 
 dotenv.config();
+console.log('🧪 Loaded ENV:', process.env.BOT_TOKEN, process.env.APPLICATION_ID);
 
 const APPLICATION_ID = process.env.APPLICATION_ID;
 const BOT_TOKEN = process.env.BOT_TOKEN;
