@@ -5,12 +5,12 @@ import {
   InteractionResponseType,
   verifyKeyMiddleware,
 } from 'discord-interactions';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-import bodyParser from 'body-parser';
 app.use(bodyParser.json({ verify: (req, res, buf) => { req.rawBody = buf } }));
 
 app.post(
