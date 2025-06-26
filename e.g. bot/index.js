@@ -1,6 +1,8 @@
-const express = require('express');
-const { verifyKeyMiddleware } = require('discord-interactions');
-const { InteractionType, InteractionResponseType } = require('discord-interactions');
+import express from 'express';
+import dotenv from 'dotenv';
+import { verifyKeyMiddleware } from 'discord-interactions';
+
+dotenv.config();
 
 require('dotenv').config();
 
