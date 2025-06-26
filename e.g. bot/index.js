@@ -1,30 +1,48 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import { verifyKeyMiddleware } from 'discord-interactions';
+app.post(
+  '/api/interactions',
+  verifyKeyMiddleware(process.env.PUBLIC_KEY),
+  (req, res) => {
+    const interaction = req.body;
 
-dotenv.config();
+    // Handle initial verification
+    if (interaction.type === InteractionType.PING) {
+      return res.send({ type: InteractionResponseType.PONG });
+    }
 
-const app = express();
-app.use(express.json());
+    // Handle slash commands
+    if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+      const { name, options } = interaction.data;
 
-const PUBLIC_KEY = process.env.PUBLIC_KEY;
-if (!PUBLIC_KEY) {
-  console.error('ERROR: Missing PUBLIC_KEY in environment variables!');
-  process.exit(1);
-}
+      if (name === 'bestie') {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'You called, bestie? 💅',
+          },
+        });
+      }
 
-app.post('/api/interactions', verifyKeyMiddleware(PUBLIC_KEY), (req, res) => {
-  const interaction = req.body;
-  if (interaction.type === InteractionType.PING) {
-    return res.send({ type: InteractionResponseType.PONG });
+      if (name === 'spill') {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'Spill the tea, I’m listening ☕👀',
+          },
+        });
+      }
+
+      if (name === 'hug') {
+        const user = options[0].value;
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `Bestie gave <@${user}> a squishy hug 🤗💖`,
+          },
+        });
+      }
+    }
   }
-  if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-    return res.send({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: { content: 'Heyy bestie! 💅 I’m alive.' }
-    });
-  }
-});
+);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => { console.log(`BestieBot running on port ${port}`); });
