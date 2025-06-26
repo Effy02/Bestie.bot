@@ -1,33 +1,40 @@
+import express from 'express';
+import dotenv from 'dotenv';
+import {
+  InteractionType,
+  InteractionResponseType,
+  verifyKeyMiddleware,
+} from 'discord-interactions';
+
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+
 app.post(
   '/api/interactions',
   verifyKeyMiddleware(process.env.PUBLIC_KEY),
   (req, res) => {
     const interaction = req.body;
 
-    // Handle initial verification
     if (interaction.type === InteractionType.PING) {
       return res.send({ type: InteractionResponseType.PONG });
     }
 
-    // Handle slash commands
     if (interaction.type === InteractionType.APPLICATION_COMMAND) {
       const { name, options } = interaction.data;
 
       if (name === 'bestie') {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: 'You called, bestie? 💅',
-          },
+          data: { content: 'You called, bestie? 💅' },
         });
       }
 
       if (name === 'spill') {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: 'Spill the tea, I’m listening ☕👀',
-          },
+          data: { content: 'Spill the tea, I’m listening ☕👀' },
         });
       }
 
@@ -40,6 +47,60 @@ app.post(
           },
         });
       }
+
+      if (name === 'advice') {
+        const responses = [
+          'Dump him 😒',
+          'Block and glow up 💅',
+          'Girl be serious 😭',
+          "You're the problem... and I support you 💖",
+          'Touch grass 🌱',
+        ];
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: responses[Math.floor(Math.random() * responses.length)],
+          },
+        });
+      }
+
+      if (name === 'vibecheck') {
+        const vibes = [
+          'Slaying 🔥',
+          'Crying in the club 😭',
+          'You ATE that',
+          'Wearing socks with sandals today 🧦🩴',
+        ];
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: vibes[Math.floor(Math.random() * vibes.length)],
+          },
+        });
+      }
+
+      if (name === 'selfie') {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "Post that selfie. You're literally mother. 💁‍♀️📸",
+          },
+        });
+      }
+
+      if (name === 'affirmation') {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'You are hot. You are smart. You are THAT girl 💖',
+          },
+        });
+      }
     }
   }
 );
+
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`BestieBot running on port ${PORT}`);
+});
